@@ -47,11 +47,13 @@ class HeadHunterAPI(JobAPI):
 
 class Vacancy(JobAPI):
     """Дочерний класс для работы с вакансиями"""
+    __slots__ = ['name', 'url', 'description', 'salary']
+
     def __init__(self, name: str, url: str, description: str, salary: str,):
         self.name = name
         self.url = url
         self.description = description
-        self.salary = salary if salary else "Зарплата не указана"
+        self.salary = self._valid_salary(salary)
 
     @classmethod
     def list_total(cls, vacancies_data):
@@ -85,15 +87,60 @@ class Vacancy(JobAPI):
         else:
             return 'Зарплата не указана'
 
+    def _valid_salary(self, salary):
+        """Приватный метод для валидации зарплаты"""
+        if isinstance(salary, (int, float)) and salary >= 0:
+            return salary
+        return 'Зарплата не указана'
+
+    def __lt__(self, other):
+        return self.salary < other.salary
+
+    def __le__(self, other):
+        return self.salary <= other.salary
+
+    def __gt__(self, other):
+        return self.salary > other.salary
+
+    def __ge__(self, other):
+        return self.salary >= other.salary
+
 
 class JsonJob(VacancyStorage):
     """Дочерний класс для работы с JSON"""
     def __init__(self, filename="vacancies.json"):
-        self.filename = filename
+        self.__filename = filename
 
 
-    def add_vacancies(self, vacancies_data):
+    def add_vacancies(self, vacancy):
         """Метод добавления в файл вакансий"""
+        vacancies = self.get_vacancies()
+
+        if vacancy in vacancies:
+            print('Вакансия уже существует')
+            return
+
+        vacancies.append(vacancy)
+
+        with open(self.__filename, 'w') as f:
+            json.dump(vacancies, f, indent=4)
+
+
+    def get_vacancies(self):
+        """Метод получения данных из файла"""
+        try:
+            with open(self.__filename, 'r') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return []
+
+    def remove_vacancy(self, vacancy_name):
+        """Метод удаления вакансий"""
+        vacancies = self.get_vacancies()
+        updated_vacancies = [vac for vac in vacancies if vac.get('name') != vacancy_name]
+
+        with open(self.__filename, 'w') as f:
+            json.dump(updated_vacancies, f, indent=4)
 
 
 
