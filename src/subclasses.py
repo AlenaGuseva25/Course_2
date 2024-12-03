@@ -1,6 +1,8 @@
 import requests
 import json
+from typing import List, Dict, Any
 from src.abstract_classes import JobAPI, VacancyStorage
+
 
 
 
@@ -11,12 +13,12 @@ class HeadHunterAPI(JobAPI):
         self.__params = {'text': '', 'page': 0, 'per_page': 100}
         self.__vacancies = []
 
-    def __connect(self):
+    def __connect(self) -> bool:
         """Метод проверки соединения с АПИ"""
         response = requests.get(self.__BASE_URL)
         return response.status_code == 200
 
-    def get_vacancies(self, query):
+    def get_vacancies(self, query: str) ->List[Dict[str, Any]]:
         """Метод получения вакансий по запросу"""
         if not self.__connect():
             print(f"Ошибка соединения с API")
@@ -56,7 +58,7 @@ class Vacancy(JobAPI):
         self.salary = self._valid_salary(salary)
 
     @classmethod
-    def list_total(cls, vacancies_data):
+    def list_total(cls, vacancies_data: List[Dict[str, Any]]) -> List['Vacancy']:
         """Метод принимает данные вакансий и конвертирует их"""
         vacancies = []
         for vacancy in vacancies_data:
@@ -70,7 +72,7 @@ class Vacancy(JobAPI):
         return vacancies
 
     @classmethod
-    def _format_salary(salary_data):
+    def _format_salary(salary_data: Dict[str, Any]) -> str:
         """Метод работы с данными о зарплате"""
         if salary_data is None:
             return 'Зарплата не указана'
@@ -87,33 +89,32 @@ class Vacancy(JobAPI):
         else:
             return 'Зарплата не указана'
 
-    def _valid_salary(self, salary):
+    def _valid_salary(self, salary: Any) -> str:
         """Приватный метод для валидации зарплаты"""
         if isinstance(salary, (int, float)) and salary >= 0:
             return salary
         return 'Зарплата не указана'
 
-    def __lt__(self, other):
+    def __lt__(self, other: 'Vacancy') -> bool:
         return self.salary < other.salary
 
-    def __le__(self, other):
+    def __le__(self, other: 'Vacancy') -> bool:
         return self.salary <= other.salary
 
-    def __gt__(self, other):
+    def __gt__(self, other: 'Vacancy') -> bool:
         return self.salary > other.salary
 
-    def __ge__(self, other):
+    def __ge__(self, other: 'Vacancy') -> bool:
         return self.salary >= other.salary
 
 
 class JsonJob(VacancyStorage):
     """Дочерний класс для работы с JSON"""
-    def __init__(self, filename="vacancies.json"):
+    def __init__(self, filename: str = "vacancies.json"):
         self.__filename = filename
 
-
-    def add_vacancies(self, vacancy):
-        """Метод добавления в файл вакансий"""
+    def add_vacancy(self, vacancy: Dict[str, Any]):
+        """Метод добавления вакансий в файл"""
         vacancies = self.get_vacancies()
 
         if any(vac.get('name') == vacancy.get('name') for vac in vacancies):
@@ -126,7 +127,7 @@ class JsonJob(VacancyStorage):
             json.dump(vacancies, f, indent=4)
 
 
-    def get_vacancies(self):
+    def get_vacancies(self) -> List[Dict[str, Any]]:
         """Метод получения данных из файла"""
         try:
             with open(self.__filename, 'r') as f:
@@ -134,7 +135,7 @@ class JsonJob(VacancyStorage):
         except FileNotFoundError:
             return []
 
-    def remove_vacancy(self, vacancy_name):
+    def remove_vacancy(self, vacancy_name: str):
         """Метод удаления вакансий"""
         vacancies = self.get_vacancies()
         updated_vacancies = [vac for vac in vacancies if vac.get('name') != vacancy_name]
