@@ -1,27 +1,24 @@
 import requests
-import json
 from typing import List, Dict, Any
 from src.abstract_classes import JobAPI, VacancyStorage
-
-
+from utils import connect_to_api, format_salary, valid_salary, read_json_file, write_json_file, vacancy_exists
 
 
 class HeadHunterAPI(JobAPI):
     def __init__(self):
         self.__BASE_URL = 'http://api.hh.ru/vacancies'
-        self.__headers = self.headers = {'User-Agent': 'HH-User-Agent'}
+        self.__headers = {'User-Agent': 'HH-User-Agent'}
         self.__params = {'text': '', 'page': 0, 'per_page': 100}
         self.__vacancies = []
 
     def __connect(self) -> bool:
         """Метод проверки соединения с АПИ"""
-        response = requests.get(self.__BASE_URL)
-        return response.status_code == 200
+        return connect_to_api(self.__BASE_URL)
 
-    def get_vacancies(self, query: str) ->List[Dict[str, Any]]:
+    def get_vacancies(self, query: str) -> List[Dict[str, Any]]:
         """Метод получения вакансий по запросу"""
         if not self.__connect():
-            print(f"Ошибка соединения с API")
+            print("Ошибка соединения с API")
             return []
 
         self.__params['text'] = query
@@ -29,9 +26,9 @@ class HeadHunterAPI(JobAPI):
 
         while True:
             self.__params['page'] = page
-            response = requests.get(self.__BASE_URL, headers=self.headers, params=self.__params)
+            response = requests.get(self.__BASE_URL, headers=self.__headers, params=self.__params)
 
-            if response.status_code == 200:
+            if response.status_code != 200:
                 print(f'Ошибка при получении данных: {response.status_code}')
                 break
 
@@ -45,17 +42,14 @@ class HeadHunterAPI(JobAPI):
         return self.__vacancies
 
 
-
-
 class Vacancy(JobAPI):
     """Дочерний класс для работы с вакансиями"""
-    __slots__ = ['name', 'url', 'description', 'salary']
 
-    def __init__(self, name: str, url: str, description: str, salary: str,):
+    def __init__(self, name: str, url: str, description: str, salary: str):
         self.name = name
         self.url = url
         self.description = description
-        self.salary = self._valid_salary(salary)
+        self.salary = valid_salary(salary)
 
     @classmethod
     def list_total(cls, vacancies_data: List[Dict[str, Any]]) -> List['Vacancy']:
@@ -63,49 +57,17 @@ class Vacancy(JobAPI):
         vacancies = []
         for vacancy in vacancies_data:
             vacancies_total = {
-            "name": vacancy.get("name"),
-            "url": vacancy.get("url"),
-            "description": vacancy.get('snippet', {}).get('requirement', 'Нет описания'),
-            "salary": cls._format_salary(vacancy.get('salary')),
+                "name": vacancy.get("name"),
+                "url": vacancy.get("url"),
+                "description": vacancy.get('snippet', {}).get('requirement', 'Нет описания'),
+                "salary": format_salary(vacancy.get('salary')),
             }
             vacancies.append(cls(**vacancies_total))
         return vacancies
 
-    @classmethod
-    def _format_salary(salary_data: Dict[str, Any]) -> str:
-        """Метод работы с данными о зарплате"""
-        if salary_data is None:
-            return 'Зарплата не указана'
-        salary_from = salary_data.get("from")
-        salary_to = salary_data.get('to')
-        currency = salary_data.get("currency", 'руб.')
-
-        if salary_from and salary_to:
-            return f'Зарплата: от {salary_from} до {salary_to} {currency}'
-        elif salary_from:
-            return f'Зарплата: от {salary_from} {currency}'
-        elif salary_to:
-            return f'Зарплата: до {salary_to} {currency}'
-        else:
-            return 'Зарплата не указана'
-
     def _valid_salary(self, salary: Any) -> str:
         """Приватный метод для валидации зарплаты"""
-        if isinstance(salary, (int, float)) and salary >= 0:
-            return salary
-        return 'Зарплата не указана'
-
-    def __lt__(self, other: 'Vacancy') -> bool:
-        return self.salary < other.salary
-
-    def __le__(self, other: 'Vacancy') -> bool:
-        return self.salary <= other.salary
-
-    def __gt__(self, other: 'Vacancy') -> bool:
-        return self.salary > other.salary
-
-    def __ge__(self, other: 'Vacancy') -> bool:
-        return self.salary >= other.salary
+        return valid_salary(salary)
 
 
 class JsonJob(VacancyStorage):
@@ -115,33 +77,24 @@ class JsonJob(VacancyStorage):
 
     def add_vacancy(self, vacancy: Dict[str, Any]):
         """Метод добавления вакансий в файл"""
-        vacancies = self.get_vacancies()
+        vacancies = read_json_file(self.__filename)
 
-        if any(vac.get('name') == vacancy.get('name') for vac in vacancies):
+        if vacancy_exists(vacancies, vacancy.get('name')):
             print('Вакансия уже существует')
             return
 
         vacancies.append(vacancy)
-
-        with open(self.__filename, 'w') as f:
-            json.dump(vacancies, f, indent=4)
-
+        write_json_file(self.__filename, vacancies)
 
     def get_vacancies(self) -> List[Dict[str, Any]]:
         """Метод получения данных из файла"""
-        try:
-            with open(self.__filename, 'r') as f:
-                return json.load(f)
-        except FileNotFoundError:
-            return []
+        return read_json_file(self.__filename)
 
     def remove_vacancy(self, vacancy_name: str):
         """Метод удаления вакансий"""
         vacancies = self.get_vacancies()
         updated_vacancies = [vac for vac in vacancies if vac.get('name') != vacancy_name]
-
-        with open(self.__filename, 'w') as f:
-            json.dump(updated_vacancies, f, indent=4)
+        write_json_file(self.__filename, updated_vacancies)
 
 
 
