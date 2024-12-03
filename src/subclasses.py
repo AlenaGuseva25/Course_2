@@ -61,11 +61,29 @@ class Vacancy(JobAPI):
             vacancies_total = {
             "name": vacancy.get("name"),
             "url": vacancy.get("url"),
-            "description": vacancy.get('snippet').get('requirement'),
-            "salary": vacancy.get("salary"),
+            "description": vacancy.get('snippet', {}).get('requirement', 'Нет описания'),
+            "salary": cls._format_salary(vacancy.get('salary')),
             }
-            vacancies.append(cls(vacancies_total))
+            vacancies.append(cls(**vacancies_total))
         return vacancies
+
+    @classmethod
+    def _format_salary(salary_data):
+        """Метод работы с данными о зарплате"""
+        if salary_data is None:
+            return 'Зарплата не указана'
+        salary_from = salary_data.get("from")
+        salary_to = salary_data.get('to')
+        currency = salary_data.get("currency", 'руб.')
+
+        if salary_from and salary_to:
+            return f'Зарплата: от {salary_from} до {salary_to} {currency}'
+        elif salary_from:
+            return f'Зарплата: от {salary_from} {currency}'
+        elif salary_to:
+            return f'Зарплата: до {salary_to} {currency}'
+        else:
+            return 'Зарплата не указана'
 
 
 class JsonJob(VacancyStorage):
