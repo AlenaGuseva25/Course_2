@@ -116,7 +116,7 @@ class JsonJob(VacancyStorage):
         """Метод добавления в файл вакансий"""
         vacancies = self.get_vacancies()
 
-        if vacancy in vacancies:
+        if any(vac.get('name') == vacancy.get('name') for vac in vacancies):
             print('Вакансия уже существует')
             return
 
