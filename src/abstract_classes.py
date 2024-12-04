@@ -15,7 +15,6 @@ class JobAPI(ABC):
 
 
 
-
 class VacancyStorage(ABC):
     """Абстрактный класс для работы с JSON """
 

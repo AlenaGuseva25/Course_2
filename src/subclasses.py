@@ -44,6 +44,7 @@ class HeadHunterAPI(JobAPI):
 
 class Vacancy(JobAPI):
     """Дочерний класс для работы с вакансиями"""
+    __slots__ = ['name', 'url', 'description', 'salary']
 
     def __init__(self, name: str, url: str, description: str, salary: str):
         self.name = name
