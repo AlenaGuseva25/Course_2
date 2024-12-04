@@ -7,14 +7,15 @@ from src.utils import connect_to_api, format_salary, valid_salary, read_json_fil
 
 class HeadHunterAPI(JobAPI):
     def __init__(self):
-        self.__BASE_URL = 'https://api.hh.ru/vacancies'
-        self.__headers = {'User-Agent': 'HH-User-Agent'}
-        self.__params = {'text': '', 'page': 0, 'per_page': 100}
-        self.__vacancies = []
+        self._BASE_URL = 'https://api.hh.ru/vacancies'
+        self._headers = {'User-Agent': 'HH-User-Agent'}
+        self._params = {'text': '', 'page': 0, 'per_page': 100}
+        self._vacancies = []
+
 
     def connect(self) -> bool:
         """Метод проверки соединения с АПИ"""
-        return connect_to_api(self.__BASE_URL)
+        return connect_to_api(self._BASE_URL)
 
     def get_vacancies(self, query: str) -> List[Dict[str, Any]]:
         """Метод получения вакансий по запросу"""
@@ -22,12 +23,12 @@ class HeadHunterAPI(JobAPI):
             print("Ошибка соединения с API")
             return []
 
-        self.__params['text'] = query
+        self._params['text'] = query
         page = 0
 
         while True:
-            self.__params['page'] = page
-            response = requests.get(self.__BASE_URL, headers=self.__headers, params=self.__params)
+            self._params['page'] = page
+            response = requests.get(self._BASE_URL, headers=self._headers, params=self._params)
 
             if response.status_code != 200:
                 print(f'Ошибка при получении данных: {response.status_code}')
@@ -37,10 +38,10 @@ class HeadHunterAPI(JobAPI):
             if not data['items']:
                 break
 
-            self.__vacancies.extend(data['items'])
+            self._vacancies.extend(data['items'])
             page += 1
 
-        return self.__vacancies
+        return self._vacancies
 
 
 class Vacancy(JobAPI):
