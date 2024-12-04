@@ -4,9 +4,10 @@ from src.abstract_classes import JobAPI, VacancyStorage
 from src.utils import connect_to_api, format_salary, valid_salary, read_json_file, write_json_file, vacancy_exists
 
 
+
 class HeadHunterAPI(JobAPI):
     def __init__(self):
-        self.__BASE_URL = 'http://api.hh.ru/vacancies'
+        self.__BASE_URL = 'https://api.hh.ru/vacancies'
         self.__headers = {'User-Agent': 'HH-User-Agent'}
         self.__params = {'text': '', 'page': 0, 'per_page': 100}
         self.__vacancies = []
@@ -51,6 +52,12 @@ class Vacancy(JobAPI):
         self.url = url
         self.description = description
         self.salary = valid_salary(salary)
+
+    def connect(self) -> bool:
+        return True
+
+    def get_vacancies(self, query: str) -> List[dict]:
+        return []
 
     @classmethod
     def list_total(cls, vacancies_data: List[Dict[str, Any]]) -> List['Vacancy']:
