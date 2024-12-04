@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class JobAPI(ABC):
     """Абстрактный класс для работы с АПИ"""
 

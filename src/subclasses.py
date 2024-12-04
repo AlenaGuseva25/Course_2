@@ -1,7 +1,7 @@
 import requests
 from typing import List, Dict, Any
 from src.abstract_classes import JobAPI, VacancyStorage
-from utils import connect_to_api, format_salary, valid_salary, read_json_file, write_json_file, vacancy_exists
+from src.utils import connect_to_api, format_salary, valid_salary, read_json_file, write_json_file, vacancy_exists
 
 
 class HeadHunterAPI(JobAPI):
@@ -11,13 +11,13 @@ class HeadHunterAPI(JobAPI):
         self.__params = {'text': '', 'page': 0, 'per_page': 100}
         self.__vacancies = []
 
-    def __connect(self) -> bool:
+    def connect(self) -> bool:
         """Метод проверки соединения с АПИ"""
         return connect_to_api(self.__BASE_URL)
 
     def get_vacancies(self, query: str) -> List[Dict[str, Any]]:
         """Метод получения вакансий по запросу"""
-        if not self.__connect():
+        if not self.connect():
             print("Ошибка соединения с API")
             return []
 
@@ -96,7 +96,6 @@ class JsonJob(VacancyStorage):
         vacancies = self.get_vacancies()
         updated_vacancies = [vac for vac in vacancies if vac.get('name') != vacancy_name]
         write_json_file(self.__filename, updated_vacancies)
-
 
 
 
