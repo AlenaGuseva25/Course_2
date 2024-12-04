@@ -1,4 +1,5 @@
-import os
+import json
+import requests
 from re import search
 from typing import List, Any, Dict
 from src.subclasses import JsonJob, HeadHunterAPI, Vacancy
@@ -44,16 +45,22 @@ def user_interaction(filepath: str = "vacancies.json") -> None:  # Added filepat
         for vacancy in top_vacancies:
             print(f"{vacancy.name}: {vacancy.url}")
 
-        for vacancy in top_vacancies:
-          json_job.add_vacancy(vacancy)
-
+        json_data = [v.to_dict() for v in top_vacancies]
+        return json.dumps(json_data, indent=4, ensure_ascii=False)
 
     except ValueError:
-        print("Некорректный ввод данных.")
+        return json.dumps({"error": "Некорректный ввод данных."})
+    except requests.exceptions.RequestException as e:
+        return json.dumps({"error": f"Ошибка сети: {e}"})
+    except json.JSONDecodeError as e:
+        return json.dumps({"error": f"Ошибка декодирования JSON: {e}"})
     except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        return json.dumps({"error": f"Произошла ошибка: {e}"})
 
 
 if __name__ == "__main__":
     filepath = r"C:\Users\Alena\my_1\Course_2\data\vacancies.json"
-    user_interaction(filepath)
+    json_result = user_interaction(filepath)
+    print(json_result)
+    with open(filepath, 'w', encoding='utf-8') as f: #Save to file
+        f.write(json_result)

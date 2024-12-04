@@ -22,14 +22,13 @@ class VacancyStorage(ABC):
     @abstractmethod
     def add_vacancy(self, vacancy):
         """Метод добавления в файл вакансий"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def get_vacancies(self):
         """Метод получения данных из файла"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
-    def remove_vacancy(self, vacancy_name):
-        """Метод удаления вакансий"""
-        pass
+    def remove_vacancy(self, vacancy_name: str):
+        raise NotImplementedError
