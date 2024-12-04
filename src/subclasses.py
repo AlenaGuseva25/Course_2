@@ -15,9 +15,11 @@ class HeadHunterAPI(JobAPI):
 
 
     def connect(self) -> bool:
+        """Метод проверки соединение с API HeadHunter."""
         return connect_to_api(self._BASE_URL)
 
     def get_vacancies(self, query: str) -> List[Dict[str, Any]]:
+        """Метод получения вакансии по заданному запросу"""
         if not self.connect():
             print("Ошибка соединения с API")
             return []
@@ -61,6 +63,7 @@ class Vacancy():
         self.salary = salary
 
     def to_dict(self):
+        """Метод преобразования объект Vacancy в словарь."""
         return {
             'name': self.name,
             'url': self.url,
@@ -69,6 +72,7 @@ class Vacancy():
         }
 
     def __repr__(self):
+        """Метод возвращает строковое представление объекта Vacancy."""
         return f"Vacancy(name='{self.name}', url='{self.url}', salary='{self.salary}')"
 
 
@@ -78,6 +82,7 @@ class JsonJob(VacancyStorage):
         self.filename = filename
 
     def add_vacancy(self, vacancy: Vacancy):
+        """Метод добавляет вакансию в JSON файл."""
         vacancies = self.get_vacancies()
         if any(v['name'] == vacancy.name for v in vacancies):
             print('Вакансия уже существует')

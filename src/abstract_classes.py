@@ -31,4 +31,5 @@ class VacancyStorage(ABC):
 
     @abstractmethod
     def remove_vacancy(self, vacancy_name: str):
+        """Метод удаления вакансий"""
         raise NotImplementedError

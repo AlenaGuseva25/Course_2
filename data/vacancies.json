@@ -144,12 +144,6 @@
         "salary": "Зарплата: от 100000 до 150000 RUR"
     },
     {
-        "name": "BI-аналитик",
-        "url": "https://hh.ru/vacancy/111383100",
-        "description": "Отличное знание SQL, опыты работ с MS SQL/PostgreSQL. Владение <highlighttext>Python</highlighttext> для решения аналитических задач (pandas, numpy). Желателен опыт работы...",
-        "salary": "Зарплата не указана"
-    },
-    {
         "name": "Back End разработчика (Python/Django)",
         "url": "https://hh.ru/vacancy/111030132",
         "description": "Высокий уровень владения <highlighttext>Python</highlighttext> с Django. Твёрдое понимание концепций и лучших практик разработки бэкенда. Опыт работы с системами баз данных...",
@@ -271,14 +265,14 @@
     },
     {
         "name": "Backend-разработчик",
-        "url": "https://hh.ru/vacancy/112452293",
-        "description": "Уверенное знание <highlighttext>Python</highlighttext> и JavaScript. Опыт работы с базами данных и разработкой систем авторизации. Знания и опыт работы с Web...",
+        "url": "https://hh.ru/vacancy/111513705",
+        "description": "3+ года опыта работы в backend-разработке на Python.Умение писать чистый, понятный и документированный код. Знание фреймворка FastAPI (FastAPI...",
         "salary": "Зарплата: от 100000 до 200000 RUR"
     },
     {
         "name": "Backend-разработчик",
-        "url": "https://hh.ru/vacancy/111513705",
-        "description": "3+ года опыта работы в backend-разработке на Python.Умение писать чистый, понятный и документированный код. Знание фреймворка FastAPI (FastAPI...",
+        "url": "https://hh.ru/vacancy/112452293",
+        "description": "Уверенное знание <highlighttext>Python</highlighttext> и JavaScript. Опыт работы с базами данных и разработкой систем авторизации. Знания и опыт работы с Web...",
         "salary": "Зарплата: от 100000 до 200000 RUR"
     },
     {
@@ -289,14 +283,20 @@
     },
     {
         "name": "Backend-разработчик",
+        "url": "https://hh.ru/vacancy/111948604",
+        "description": "Понимание и практический опыт использования указанных ниже или схожих технологий: <highlighttext>Python</highlighttext>/Django или PHP/Laravel. PostgreSQL. Docker. Git. ",
+        "salary": "Зарплата не указана"
+    },
+    {
+        "name": "Backend-разработчик",
         "url": "https://hh.ru/vacancy/112178658",
         "description": "Дополнительным преимуществом будет знание golang, знание/опыт работы с <highlighttext>Python</highlighttext>, Bash, работа с docker контейнерами, опыт разделения монолита на микросервисы...",
         "salary": "Зарплата: от 100000 RUR"
     },
     {
         "name": "Backend-разработчик",
-        "url": "https://hh.ru/vacancy/111948604",
-        "description": "Понимание и практический опыт использования указанных ниже или схожих технологий: <highlighttext>Python</highlighttext>/Django или PHP/Laravel. PostgreSQL. Docker. Git. ",
-        "salary": "Зарплата не указана"
+        "url": "https://hh.ru/vacancy/111307834",
+        "description": "Уверенные знания : <highlighttext>Python</highlighttext> (FastAPI). - Опыт работы с PostgreSQL. - Знание принципов построения микросервисной архитектуры. - Опыт работы с Docker, понимание CI/CD. - ",
+        "salary": "Зарплата: от 100000 до 200000 RUR"
     }
 ]
