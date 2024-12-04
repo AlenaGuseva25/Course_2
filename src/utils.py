@@ -50,10 +50,12 @@ def read_json_file(filename: str) -> List[Dict[str, Any]]:
         print(f"Ошибка, файл '{filename}' не найден")
         return []
 
+
 def write_json_file(filename: str, data: List[Dict[str, Any]]):
     """Функция записывает данные в JSON-файл."""
     with open(filename, 'w') as f:
         json.dump(data, f, indent=4)
+
 
 def vacancy_exists(vacancies: List[Dict[str, Any]], vacancy_name: str) -> bool:
     """Функция проверяет, существует ли вакансия с данным именем."""

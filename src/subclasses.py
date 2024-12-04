@@ -2,17 +2,16 @@ import json
 import requests
 from typing import List, Dict, Any
 from src.abstract_classes import JobAPI, VacancyStorage
-from src.utils import connect_to_api, format_salary, valid_salary, read_json_file, write_json_file, vacancy_exists
-
+from src.utils import connect_to_api
 
 
 class HeadHunterAPI(JobAPI):
+    """Дочерний класс для работы с API"""
     def __init__(self):
         self._BASE_URL = 'https://api.hh.ru/vacancies'
         self._headers = {'User-Agent': 'HH-User-Agent'}
         self._params = {'text': '', 'page': 0, 'per_page': 100}
         self._vacancies = []
-
 
     def connect(self) -> bool:
         """Метод проверки соединение с API HeadHunter."""
