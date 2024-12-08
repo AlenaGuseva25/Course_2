@@ -1,10 +1,7 @@
 import json
 import requests
-from re import search
-from typing import List, Any, Dict
-from src.subclasses import JsonJob, HeadHunterAPI, Vacancy
-from src.utils import connect_to_api, format_salary, valid_salary, read_json_file, write_json_file, vacancy_exists
-from src.abstract_classes import JobAPI, VacancyStorage
+from src.subclasses import HeadHunterAPI, JsonJob, Vacancy
+from src.utils import format_salary, write_json_file, connect_to_api, read_json_file, vacancy_exists, filter_vacancies
 
 
 def user_interaction(filepath: str = "vacancies.json") -> None:  # Added filepath argument

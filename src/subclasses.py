@@ -1,24 +1,59 @@
 import json
+import time
+import re
+from typing import Any, Dict, List
+
 import requests
-from typing import List, Dict, Any
+
 from src.abstract_classes import JobAPI, VacancyStorage
-from src.utils import connect_to_api
+from src.utils import connect_to_api, format_salary
+
+
+class Vacancy:
+    """Дочерний класс для работы с вакансиями"""
+    __slots__ = ['_name', '_url', '_description', '_salary']
+
+    def __init__(self, name: str, url: str, description: str, salary: str):
+        if not isinstance(name, str):
+            raise TypeError("name must be a string")
+        if not isinstance(url, str):
+            raise TypeError("url must be a string")
+        if not isinstance(description, str):
+            raise TypeError("description must be a string")
+        if not isinstance(salary, str):
+            raise TypeError("salary must be a string")
+
+        self._name = name
+        self._url = url
+        self._description = description or ""  #Handle None or empty string
+        self._salary = salary
+
+    def to_dict(self) -> Dict:
+        """Метод преобразования объект Vacancy в словарь."""
+        return {
+            'name': self._name,
+            'url': self._url,
+            'description': self._description,
+            'salary': self._salary
+        }
+
+    def __repr__(self) -> str:
+        """Метод возвращает строковое представление объекта Vacancy."""
+        return f"Vacancy(name='{self._name}', url='{self._url}', description='{self._description[:20]}...', salary='{self._salary}')"
 
 
 class HeadHunterAPI(JobAPI):
-    """Дочерний класс для работы с API"""
     def __init__(self):
         self._BASE_URL = 'https://api.hh.ru/vacancies'
         self._headers = {'User-Agent': 'HH-User-Agent'}
         self._params = {'text': '', 'page': 0, 'per_page': 100}
         self._vacancies = []
 
+
     def connect(self) -> bool:
-        """Метод проверки соединение с API HeadHunter."""
         return connect_to_api(self._BASE_URL)
 
     def get_vacancies(self, query: str) -> List[Dict[str, Any]]:
-        """Метод получения вакансии по заданному запросу"""
         if not self.connect():
             print("Ошибка соединения с API")
             return []
@@ -62,7 +97,6 @@ class Vacancy():
         self.salary = salary
 
     def to_dict(self):
-        """Метод преобразования объект Vacancy в словарь."""
         return {
             'name': self.name,
             'url': self.url,
@@ -71,7 +105,6 @@ class Vacancy():
         }
 
     def __repr__(self):
-        """Метод возвращает строковое представление объекта Vacancy."""
         return f"Vacancy(name='{self.name}', url='{self.url}', salary='{self.salary}')"
 
 
@@ -81,7 +114,6 @@ class JsonJob(VacancyStorage):
         self.filename = filename
 
     def add_vacancy(self, vacancy: Vacancy):
-        """Метод добавляет вакансию в JSON файл."""
         vacancies = self.get_vacancies()
         if any(v['name'] == vacancy.name for v in vacancies):
             print('Вакансия уже существует')
