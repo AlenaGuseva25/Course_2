@@ -1,62 +1,32 @@
 [
     {
-        "name": "AI Engineer",
-        "url": "https://hh.ru/vacancy/112649523",
-        "description": "Опыт программирования: <highlighttext>Python</highlighttext>, C, Java. - Умение работать с крупными языковыми моделями (LLM), включая их настройку и оптимизацию для локального использования. - ",
+        "name": "Back-end разработчик",
+        "url": "https://hh.ru/vacancy/111879745",
+        "description": "Опыт работы с Python и SQL. Знание веб-фреймворков FastAPI и Flask. Умение работать с базами данных (PostgreSQL, MySQL, MongoDB...",
         "salary": "Зарплата не указана"
     },
     {
-        "name": "AI specialist/Специалист по внедрению ИИ",
-        "url": "https://hh.ru/vacancy/111532582",
-        "description": "Знание основы визуального промпт-инженеринга. Опыт программирования на <highlighttext>Python</highlighttext> или др. Уверенный практический опыт работы с GPT-3, GPT-4...",
+        "name": "Backend Developer",
+        "url": "https://hh.ru/vacancy/112645359",
+        "description": "Релевантное образование и опыт. Опыт backend разработки от 3-х лет проектов. Уверенное владение Python: Глубокие знания языка и его...",
         "salary": "Зарплата не указана"
     },
     {
-        "name": "AI Бизнес-аналитик",
-        "url": "https://hh.ru/vacancy/111534618",
-        "description": "...работы с большими данными (Big Data). Имеет опыт работы с инструментами и языками программирования, такими как <highlighttext>Python</highlighttext> или их аналогами.",
+        "name": "Backend Developer/Intern (в офис, Нижний Новгород)",
+        "url": "https://hh.ru/vacancy/112693782",
+        "description": "Инициативность. Знание SQL. Грамотная речь. Начальные знания Python.",
         "salary": "Зарплата не указана"
     },
     {
-        "name": "AI/ML Product analyst / Product manager",
-        "url": "https://hh.ru/vacancy/111528821",
-        "description": "Готовы работать на результат (желание брать ответственность за свой результат). Базовые знания <highlighttext>Python</highlighttext> (достаточно любого опыта написания кода).",
-        "salary": "Зарплата: от 1000 USD"
-    },
-    {
-        "name": "AME-L2-SIM intern/trainee",
-        "url": "https://hh.ru/vacancy/112697112",
-        "description": "Знание Linux как с точки зрения пользователя, так и принципов работы. Знание скриптовых языков (<highlighttext>Python</highlighttext>, Bash, etc.). Опыт работы с...",
+        "name": "Backend Python developer",
+        "url": "https://hh.ru/vacancy/111608814",
+        "description": "ОС Linux. Python 3.10. FastApi. SQLAlchemy. PostgreSQL. Alembic. GIT. Docker. Socket.IO. WxPython. Опыт разработки от 2х лет. ",
         "salary": "Зарплата не указана"
     },
     {
-        "name": "Algorithms Engineer (ADAS)",
-        "url": "https://hh.ru/vacancy/112502029",
-        "description": "Опыт работы в сфере ADAS или Self-Driving. Опыт программирования на <highlighttext>Python</highlighttext>. Опыт работы с протоколом DDS. Опыт работы с...",
-        "salary": "Зарплата не указана"
-    },
-    {
-        "name": "Application Security Engineer в VK ID",
-        "url": "https://hh.ru/vacancy/103638820",
-        "description": "Знание лучших практик в разработке безопасных приложений. Знание Bash, <highlighttext>Python</highlighttext>, Go или любого другого средства скриптовой автоматизации. Умение читать код...",
-        "salary": "Зарплата не указана"
-    },
-    {
-        "name": "Auto QA (REST API)",
-        "url": "https://hh.ru/vacancy/112315306",
-        "description": "Опыт в автотестировании REST API от 2-х лет. Знание <highlighttext>Python</highlighttext> 3. HTTP, REST должны быть не просто знакомой аббревиатурой. ",
-        "salary": "Зарплата не указана"
-    },
-    {
-        "name": "Automation QA Engineer",
-        "url": "https://hh.ru/vacancy/112338495",
-        "description": "Опыт автоматизации тестирования от 2х лет; знание одного из языков программирования <highlighttext>Python</highlighttext> / Java на уровне достаточном для автоматизации тестов. ",
-        "salary": "Зарплата: от 120000 RUR"
-    },
-    {
-        "name": "Automation QA engineer / Тестировщик ПО",
-        "url": "https://hh.ru/vacancy/109651297",
-        "description": "Опыт работы с Postman. Опыт работы с базами данных (PostgreSQL, CouchDB). Знание какого-либо ЯП для автоматизации (java/js/<highlighttext>Python</highlighttext>).",
-        "salary": "Зарплата не указана"
+        "name": "Backend python developer",
+        "url": "https://hh.ru/vacancy/112699734",
+        "description": "Стек технологий: Python 3.11+, urllib3, requests, curl-cffi, bs4, selenium+uc, playwright, threading, asyncio, fastapi. ",
+        "salary": "Зарплата: от 130000 RUR"
     }
 ]
