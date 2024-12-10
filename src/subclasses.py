@@ -89,7 +89,7 @@ class JsonJob(VacancyStorage):
         if any(v['name'] == vacancy.name for v in vacancies):
             print('Вакансия уже существует')
             return
-        vacancies.append(vacancy.__dict__)
+        vacancies.append(vacancy.to_dict())
         self._save_vacancies(vacancies)
 
     def _save_vacancies(self, vacancies: List[Dict[str, Any]]):

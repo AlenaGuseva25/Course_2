@@ -5,6 +5,7 @@ import requests
 from typing import Dict, Any, List
 from src.utils import (connect_to_api, format_salary, read_json_file, vacancy_exists, filter_vacancies, valid_salary)
 
+
 class TestUtils(unittest.TestCase):
 
     @patch('requests.get')

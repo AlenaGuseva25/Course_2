@@ -28,35 +28,5 @@
         "url": "https://hh.ru/vacancy/112693782",
         "description": "Инициативность. Знание SQL. Грамотная речь. Начальные знания Python.",
         "salary": "Зарплата не указана"
-    },
-    {
-        "name": "Backend Python developer",
-        "url": "https://hh.ru/vacancy/111608814",
-        "description": "ОС Linux. Python 3.10. FastApi. SQLAlchemy. PostgreSQL. Alembic. GIT. Docker. Socket.IO. WxPython. Опыт разработки от 2х лет. ",
-        "salary": "Зарплата не указана"
-    },
-    {
-        "name": "Backend python developer",
-        "url": "https://hh.ru/vacancy/112699734",
-        "description": "Стек технологий: Python 3.11+, urllib3, requests, curl-cffi, bs4, selenium+uc, playwright, threading, asyncio, fastapi. ",
-        "salary": "Зарплата: от 130000 RUR"
-    },
-    {
-        "name": "Backend python разработчик",
-        "url": "https://hh.ru/vacancy/112389981",
-        "description": "уверенное владение языком программирования Python и необходимыми библиотеками для построения web API(fast API, SQLAlchemy, Flask...). - знания принципов ООП, паттерна...",
-        "salary": "Зарплата: от 30000 до 70000 RUR"
-    },
-    {
-        "name": "Backend разработчик (Python DRF)",
-        "url": "https://hh.ru/vacancy/112749730",
-        "description": "Уверенное знание python3. Знание сетевых протоколов HTTP, WebSocket. Продвинутое знание Django (Django REST Framework). Знание SQL, опыт работы с...",
-        "salary": "Зарплата не указана"
-    },
-    {
-        "name": "Backend-Developer Python (junior)",
-        "url": "https://hh.ru/vacancy/111249949",
-        "description": "Python 3.12. Tornado + asyncpg, aiohttp/fastapi/flask (для микросервисов). PostgreSQL, Redis. Docker, k8s. Хорошее знание Python...",
-        "salary": "Зарплата не указана"
     }
 ]
