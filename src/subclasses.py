@@ -1,13 +1,9 @@
 import json
-import time
-import re
-from fileinput import filename
 from typing import Any, Dict, List
-
 import requests
 
 from src.abstract_classes import JobAPI, VacancyStorage
-from src.utils import connect_to_api, format_salary
+from src.utils import connect_to_api
 
 
 class Vacancy():
@@ -19,7 +15,6 @@ class Vacancy():
         self.url = _url
         self.description = _description
         self.salary = _salary
-
 
     def to_dict(self):
         return {
@@ -33,7 +28,6 @@ class Vacancy():
         return f"Vacancy(name='{self.name}', url='{self.url}', salary='{self.salary}')"
 
 
-
 class HeadHunterAPI(JobAPI):
     def __init__(self):
         self._BASE_URL: str = 'https://api.hh.ru/vacancies'
@@ -41,14 +35,11 @@ class HeadHunterAPI(JobAPI):
         self._params: dict = {'text': '', 'page': 0, 'per_page': 100}
         self._vacancies: list = []
 
-
-
     def connect(self) -> bool:
         return connect_to_api(self._BASE_URL)
 
     def get_vacancies(self, query: str) -> List[Dict[str, Any]]:
         """Метод получает вакансии из АПИ на основе запроса"""
-
         if not self.connect():
             print("Ошибка соединения с API")
             return []
