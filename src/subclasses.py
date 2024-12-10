@@ -1,6 +1,7 @@
 import json
 import time
 import re
+from fileinput import filename
 from typing import Any, Dict, List
 
 import requests
@@ -9,92 +10,16 @@ from src.abstract_classes import JobAPI, VacancyStorage
 from src.utils import connect_to_api, format_salary
 
 
-class Vacancy:
-    """Дочерний класс для работы с вакансиями"""
-    __slots__ = ['_name', '_url', '_description', '_salary']
-
-    def __init__(self, name: str, url: str, description: str, salary: str):
-        if not isinstance(name, str):
-            raise TypeError("name must be a string")
-        if not isinstance(url, str):
-            raise TypeError("url must be a string")
-        if not isinstance(description, str):
-            raise TypeError("description must be a string")
-        if not isinstance(salary, str):
-            raise TypeError("salary must be a string")
-
-        self._name = name
-        self._url = url
-        self._description = description or ""  #Handle None or empty string
-        self._salary = salary
-
-    def to_dict(self) -> Dict:
-        """Метод преобразования объект Vacancy в словарь."""
-        return {
-            'name': self._name,
-            'url': self._url,
-            'description': self._description,
-            'salary': self._salary
-        }
-
-    def __repr__(self) -> str:
-        """Метод возвращает строковое представление объекта Vacancy."""
-        return f"Vacancy(name='{self._name}', url='{self._url}', description='{self._description[:20]}...', salary='{self._salary}')"
-
-
-class HeadHunterAPI(JobAPI):
-    def __init__(self):
-        self._BASE_URL = 'https://api.hh.ru/vacancies'
-        self._headers = {'User-Agent': 'HH-User-Agent'}
-        self._params = {'text': '', 'page': 0, 'per_page': 100}
-        self._vacancies = []
-
-
-    def connect(self) -> bool:
-        return connect_to_api(self._BASE_URL)
-
-    def get_vacancies(self, query: str) -> List[Dict[str, Any]]:
-        if not self.connect():
-            print("Ошибка соединения с API")
-            return []
-
-        self._params['text'] = query
-        all_vacancies = []
-        page = 0
-
-        while True:
-            self._params['page'] = page
-            try:
-                response = requests.get(self._BASE_URL, headers=self._headers, params=self._params)
-                response.raise_for_status()
-                data = response.json()
-                if not data['items']:
-                    break
-                all_vacancies.extend(data['items'])
-                page += 1
-
-            except requests.exceptions.HTTPError as e:
-                print(f"HTTP Ошибка (page {page}): {e}")
-                break
-            except requests.exceptions.RequestException as e:
-                print(f"Ошибка сети (page {page}): {e}")
-                break
-            except json.JSONDecodeError as e:
-                print(f"Ошибка декодирования (page {page}): {e}")
-                break
-
-        return all_vacancies
-
-
 class Vacancy():
     """Дочерний класс для работы с вакансиями"""
     __slots__ = ['name', 'url', 'description', 'salary']
 
-    def __init__(self, name: str, url: str, description: str, salary: str):
-        self.name = name
-        self.url = url
-        self.description = description
-        self.salary = salary
+    def __init__(self, _name: str, _url: str, _description: str, _salary: str):
+        self.name = _name
+        self.url = _url
+        self.description = _description
+        self.salary = _salary
+
 
     def to_dict(self):
         return {
@@ -106,6 +31,61 @@ class Vacancy():
 
     def __repr__(self):
         return f"Vacancy(name='{self.name}', url='{self.url}', salary='{self.salary}')"
+
+
+
+class HeadHunterAPI(JobAPI):
+    def __init__(self):
+        self._BASE_URL: str = 'https://api.hh.ru/vacancies'
+        self._headers: dict = {'User-Agent': 'HH-User-Agent'}
+        self._params: dict = {'text': '', 'page': 0, 'per_page': 100}
+        self._vacancies: list = []
+
+
+
+    def connect(self) -> bool:
+        return connect_to_api(self._BASE_URL)
+
+    def get_vacancies(self, query: str) -> List[Dict[str, Any]]:
+        """Метод получает вакансии из АПИ на основе запроса"""
+
+        if not self.connect():
+            print("Ошибка соединения с API")
+            return []
+
+        self._params['text'] = query
+        all_vacancies = []
+        page = 0
+        total_pages = 1
+
+        while page < total_pages:
+            self._params['page'] = page
+            try:
+                response = requests.get(self._BASE_URL, headers=self._headers, params=self._params)
+                response.raise_for_status()
+
+                data = response.json()
+
+                total_pages = data.get('pages',
+                                       total_pages)
+                if not data['items']:
+                    break
+                all_vacancies.extend(data['items'])
+                page += 1
+            except requests.exceptions.HTTPError as e:
+                print(f"HTTP Ошибка (page {page}): {e}")
+                break
+            except requests.exceptions.RequestException as e:
+                print(f"Ошибка сети (page {page}): {e}")
+                break
+            except json.JSONDecodeError as e:
+                print(f"Ошибка декодирования JSON (page {page}): {e}")
+                break
+            except KeyError as e:
+                print(f"Ключ не найден в ответе (page {page}): {e}")
+                break
+
+        return all_vacancies
 
 
 class JsonJob(VacancyStorage):

@@ -21,7 +21,7 @@ def user_interaction(filepath: str = "vacancies.json") -> None:  # Added filepat
                                   format_salary(vac.get('salary'))) for vac in hh_vacancies]
 
 
-        filtered_vacancies = [v for v in vacancies_list if v.description is not None and all(word in v.description.lower()
+        filtered_vacancies = [v for v in vacancies_list if v.description is not None and any(word in v.description.lower()
                                                                                              for word in filter_words)]
 
 
@@ -59,5 +59,5 @@ if __name__ == "__main__":
     filepath = r"C:\Users\Alena\my_1\Course_2\data\vacancies.json"
     json_result = user_interaction(filepath)
     print(json_result)
-    with open(filepath, 'w', encoding='utf-8') as f: #Save to file
+    with open(filepath, 'w', encoding='utf-8') as f:
         f.write(json_result)
