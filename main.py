@@ -1,10 +1,10 @@
 import json
 import requests
 from src.subclasses import HeadHunterAPI, JsonJob, Vacancy
-from src.utils import format_salary, write_json_file, connect_to_api, read_json_file, vacancy_exists, filter_vacancies
+from src.utils import format_salary
 
 
-def user_interaction(filepath: str = "vacancies.json") -> None:  # Added filepath argument
+def user_interaction(filepath: str = "vacancies.json") -> None:
     """Пользовательская функция"""
     hh_api = HeadHunterAPI()
     json_job = JsonJob(filepath)
@@ -12,30 +12,30 @@ def user_interaction(filepath: str = "vacancies.json") -> None:  # Added filepat
     try:
         search_query = input("Введите поисковый запрос: ")
         top_n = int(input("Введите количество вакансий для вывода в топ N: "))
-        filter_words = input("Введите ключевые слова для фильтрации вакансий (разделяйте запятыми): ").lower().split(",")
-        salary_range = input("Введите диапазон зарплат (например, 100000-150000, или оставьте пустым): ")
+        filter_words = input("Введите ключевые слова для фильтрации вакансий "
+                             "(разделяйте запятыми): ").lower().split(",")
+        salary_range = input("Введите диапазон зарплат "
+                             "(например, 100000-150000, или оставьте пустым): ")
 
         hh_vacancies = hh_api.get_vacancies(search_query)
 
         vacancies_list = [Vacancy(vac['name'], vac['alternate_url'], vac['snippet']['requirement'],
                                   format_salary(vac.get('salary'))) for vac in hh_vacancies]
 
-
-        filtered_vacancies = [v for v in vacancies_list if v.description is not None and any(word in v.description.lower()
-                                                                                             for word in filter_words)]
-
+        filtered_vacancies = [v for v in vacancies_list if v.description is not None and
+                              any(word in v.description.lower() for word in filter_words)]
 
         ranged_vacancies = filtered_vacancies
+
         if salary_range:
             try:
                 min_salary, max_salary = map(int, salary_range.split("-"))
-                ranged_vacancies = [v for v in filtered_vacancies if min_salary <= int(v.salary.split()[0] if v.salary else 0) <= max_salary]  # Improved salary extraction
+                ranged_vacancies = [v for v in filtered_vacancies if min_salary <=
+                                    int(v.salary.split()[0]if v.salary else 0) <= max_salary]
             except (ValueError, IndexError):
                 print("Неверный формат диапазона зарплат. Используйте формат: 100000-150000")
 
-
         sorted_vacancies = sorted(ranged_vacancies, key=lambda v: v.name)
-
 
         top_vacancies = sorted_vacancies[:top_n]
 

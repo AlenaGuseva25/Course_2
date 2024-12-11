@@ -1,5 +1,6 @@
 import json
 from typing import Any, Dict, List
+
 import requests
 
 from src.abstract_classes import JobAPI, VacancyStorage
@@ -11,10 +12,29 @@ class Vacancy():
     __slots__ = ['name', 'url', 'description', 'salary']
 
     def __init__(self, _name: str, _url: str, _description: str, _salary: str):
-        self.name = _name
-        self.url = _url
+        self.name = self._validate_name(_name)
+        self.url = self._validate_url(_url)
         self.description = _description
-        self.salary = _salary
+        self.salary = self._validate_salary(_salary)
+
+    def _validate_name(self, _name: str) -> str:
+        """Проверка корректности названия вакансии"""
+        if not isinstance(_name, str) or not _name.strip():
+            raise ValueError('Название вакансии не должно быть пустой строкой')
+        return _name
+
+    def _validate_url(self, _url: str) -> str:
+        """Проверка корректности url"""
+        if not isinstance(_url, str) or not _url.startswith('http'):
+            raise ValueError('URL должен начинаться с "http".')
+        return _url
+
+    def _validate_salary(self, _salary: Any) -> str:
+        """Валидация значения зарплаты."""
+        if isinstance(_salary, (int, float)) and _salary >= 0:
+            return _salary
+        return 'Зарплата не указана'
+
 
     def to_dict(self):
         return {
@@ -26,6 +46,36 @@ class Vacancy():
 
     def __repr__(self):
         return f"Vacancy(name='{self.name}', url='{self.url}', salary='{self.salary}')"
+
+    def __eq__(self, other):
+        """Сравнение двух объектов класса на равенство по имени, URL и ЗП"""
+        if isinstance(other, Vacancy):
+            return self.name == other.name and self.url == other.url and self.salary == other.salary
+        return False
+
+    def __lt__(self, other):
+        """Проверка меньше ли текущая ЗП, чем у другого объекта"""
+        if isinstance(other, Vacancy):
+            return self.name < other.name
+        return NotImplemented
+
+    def __le__(self, other):
+        """Проверка меньше или равна ЗП, чем у другого объекта"""
+        if isinstance(other, Vacancy):
+            return self.name <= other.name
+        return NotImplemented
+
+    def __gt__(self, other):
+        """Проверка больше ли ЗП, чем у другого объекта"""
+        if isinstance(other, Vacancy):
+            return self.name > other.name
+        return NotImplemented
+
+    def __ge__(self, other):
+        """Проверка больше или равна ЗП чем у другого объекта"""
+        if isinstance(other, Vacancy):
+            return self.name >= other.name
+        return NotImplemented
 
 
 class HeadHunterAPI(JobAPI):
@@ -99,12 +149,12 @@ class JsonJob(VacancyStorage):
         except IOError as e:
             print(f"Ошибка записи в файл '{self.filename}': {e}")
 
-    def get_vacancies(self) -> List[Dict[str, Any]]:
+    def get_vacancies(self) -> List[Vacancy]:
         try:
-            with open(self.filename, 'r', encoding='utf-8') as f:
+            with open(self.filename, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 return [Vacancy(**vac) for vac in data]
-        except (FileNotFoundError, json.JSONDecodeError) as e:
+        except (FileNotFoundError, json.JSONDecodeError, IOError) as e:
             print(f"Error reading or parsing JSON file: {e}")
             return []
 

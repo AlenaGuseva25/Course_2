@@ -1,6 +1,7 @@
 # Файл для функций, чтобы избежать дублирования и прочего мелкого функционала
 import json
 from typing import Any, Dict, List
+
 import requests
 
 

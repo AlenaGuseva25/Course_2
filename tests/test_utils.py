@@ -1,9 +1,10 @@
 import unittest
-from unittest.mock import patch, mock_open
-import json
+from unittest.mock import mock_open, patch
+
 import requests
-from typing import Dict, Any, List
-from src.utils import (connect_to_api, format_salary, read_json_file, vacancy_exists, filter_vacancies, valid_salary)
+
+from src.utils import (connect_to_api, filter_vacancies, format_salary,
+                       read_json_file, vacancy_exists, valid_salary)
 
 
 class TestUtils(unittest.TestCase):
@@ -43,7 +44,6 @@ class TestUtils(unittest.TestCase):
     def test_read_json_file_success(self, mock_file):
         result = read_json_file('test.json')
         self.assertEqual(result, [{"name": "Vacancy 1"}])
-
 
     def test_vacancy_exists_true(self):
         vacancies = [{"name": "Vacancy 1"}, {"name": "Vacancy 2"}]
