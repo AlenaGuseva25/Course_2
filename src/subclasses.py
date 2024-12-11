@@ -132,7 +132,12 @@ class HeadHunterAPI(JobAPI):
 class JsonJob(VacancyStorage):
     """Дочерний класс для работы с JSON"""
     def __init__(self, filename: str = "vacancies.json"):
-        self.filename = filename
+        self._filename = filename
+
+    @property
+    def filename(self) -> str:
+        """Геттер для имени файла"""
+        return self._filename
 
     def add_vacancy(self, vacancy: Vacancy):
         vacancies = self.get_vacancies()
