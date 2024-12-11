@@ -2,6 +2,7 @@ import json
 import requests
 from src.subclasses import HeadHunterAPI, JsonJob, Vacancy
 from src.utils import format_salary
+from pathlib import Path
 
 
 def user_interaction(filepath: str = "vacancies.json") -> None:
@@ -56,8 +57,8 @@ def user_interaction(filepath: str = "vacancies.json") -> None:
 
 
 if __name__ == "__main__":
-    filepath = r"C:\Users\Alena\my_1\Course_2\data\vacancies.json"
+    filepath = Path(r"C:\Users\Alena\my_1\Course_2\data\vacancies.json")
     json_result = user_interaction(filepath)
     print(json_result)
-    with open(filepath, 'w', encoding='utf-8') as f:
+    with filepath.open('w', encoding='utf-8') as f:
         f.write(json_result)
