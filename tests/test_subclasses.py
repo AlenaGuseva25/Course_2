@@ -9,36 +9,53 @@ from src.subclasses import HeadHunterAPI, JsonJob, Vacancy
 
 
 class TestVacancy(unittest.TestCase):
-    def setUp(self):
-        """Создадим экземпляр класса Vacancy для тестов"""
-        self.vacancy = Vacancy(
-            _name="Software Engineer",
-            _url="http://example.com/vacancy/1",
-            _description="Develop software applications.",
-            _salary="100000"
-        )
 
-    def test_initialization(self):
-        """Тестируем инициализацию объекта Vacancy"""
-        self.assertEqual(self.vacancy.name, "Software Engineer")
-        self.assertEqual(self.vacancy.url, "http://example.com/vacancy/1")
-        self.assertEqual(self.vacancy.description, "Develop software applications.")
-        self.assertEqual(self.vacancy.salary, "100000")
+    def test_validate_name_success(self):
+        vacancy = Vacancy("Test Vacancy", "https://example.com", "Description", "100k")
+        self.assertEqual(vacancy.name, "Test Vacancy")
 
-    def test_to_dict(self):
-        """Тестируем метод to_dict"""
-        expected_dict = {
-            'name': "Software Engineer",
-            'url': "http://example.com/vacancy/1",
-            'description': "Develop software applications.",
-            'salary': "100000"
-        }
-        self.assertEqual(self.vacancy.to_dict(), expected_dict)
+    def test_validate_name_empty(self):
+        with self.assertRaises(ValueError) as context:
+            Vacancy("", "https://example.com", "Description", "100k")
+        self.assertEqual(str(context.exception), "Название вакансии не должно быть пустой строкой")
 
-    def test_repr(self):
-        """Тестируем метод __repr__"""
-        expected_repr = "Vacancy(name='Software Engineer', url='http://example.com/vacancy/1', salary='100000')"
-        self.assertEqual(repr(self.vacancy), expected_repr)
+    def test_validate_name_not_string(self):
+        with self.assertRaises(ValueError) as context:
+            Vacancy(123, "https://example.com", "Description", "100k")
+        self.assertEqual(str(context.exception), "Название вакансии не должно быть пустой строкой")
+
+    def test_validate_url_success(self):
+        vacancy = Vacancy("Test Vacancy", "https://example.com", "Description", "100k")
+        self.assertEqual(vacancy.url, "https://example.com")
+
+    def test_validate_url_invalid(self):
+        with self.assertRaises(ValueError) as context:
+            Vacancy("Test Vacancy", "invalid-url", "Description", "100k")
+        self.assertEqual(str(context.exception), 'URL должен начинаться с "http".')
+
+    def test_validate_url_not_string(self):
+        with self.assertRaises(ValueError) as context:
+            Vacancy("Test Vacancy", 123, "Description", "100k")
+        self.assertEqual(str(context.exception), 'URL должен начинаться с "http".')
+
+    def test_validate_salary_success_int(self):
+        vacancy = Vacancy("Test Vacancy", "https://example.com", "Description", 100000)
+        self.assertEqual(vacancy.salary, 100000)
+
+    def test_validate_salary_success_float(self):
+        vacancy = Vacancy("Test Vacancy", "https://example.com", "Description", 100000.50)
+        self.assertEqual(vacancy.salary, 100000.50)
+
+    def test_validate_salary_negative(self):
+        vacancy = Vacancy("Test Vacancy", "https://example.com", "Description", -100)
+        self.assertEqual(vacancy.salary, 'Зарплата не указана')
+
+    def test_eq(self):
+        vacancy1 = Vacancy("Test Vacancy", "https://example.com", "Description", "100k")
+        vacancy2 = Vacancy("Test Vacancy", "https://example.com", "Description", "100k")
+        vacancy3 = Vacancy("Another Vacancy", "https://another.com", "Another Description", "150k")
+        self.assertTrue(vacancy1 == vacancy2)
+        self.assertFalse(vacancy1 == vacancy3)
 
 
 class TestHeadHunterAPI(unittest.TestCase):

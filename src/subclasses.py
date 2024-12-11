@@ -35,7 +35,6 @@ class Vacancy():
             return _salary
         return 'Зарплата не указана'
 
-
     def to_dict(self):
         return {
             'name': self.name,
