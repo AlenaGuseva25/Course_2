@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Back End Developer",
+        "url": "https://hh.ru/vacancy/112745119",
+        "description": "3+ years of working experience in backend <highlighttext>development</highlighttext>. Python, Django, FastAPI, AWS Deployment. Django DRF, nginx. Integrating with 3...",
+        "salary": "Зарплата не указана"
+    },
+    {
+        "name": "Back-end разработчик",
+        "url": "https://hh.ru/vacancy/111879745",
+        "description": "Опыт работы с Python и SQL. Знание веб-фреймворков FastAPI и Flask. Умение работать с базами данных (PostgreSQL, MySQL, MongoDB...",
+        "salary": "Зарплата не указана"
+    },
+    {
+        "name": "Backend Developer (Python) - Бэкенд-разработчик (Python)",
+        "url": "https://hh.ru/vacancy/112969546",
+        "description": "Уверенное владение языком программирования Python. - Опыт работы с системами виртуализации, такими как Proxmox и Docker. - Опыт работы с Django Rest...",
+        "salary": "Зарплата не указана"
+    },
+    {
+        "name": "Backend Developer/Intern (в офис, Нижний Новгород)",
+        "url": "https://hh.ru/vacancy/112693782",
+        "description": "Инициативность. Знание SQL. Грамотная речь. Начальные знания Python.",
+        "salary": "Зарплата не указана"
+    },
+    {
+        "name": "Backend Python Developer (Middle)",
+        "url": "https://hh.ru/vacancy/112881728",
+        "description": "Знание Python 3.8+ и уверенное использование его стандартной библиотеки. ️Знание и практическое применение ООП (объектно-ориентированного программирования). ️",
+        "salary": "Зарплата не указана"
+    }
+]
